@@ -1,0 +1,25 @@
+Date:19-06-2020
+
+1.list1= ["eat","tea","far","raf","arf"]
+o/p:Nested lists with Anagram words as a list and remaining words as another list
+
+
+2.str = "abcaklmoeeffd"
+
+
+3.str = 100110110 => 5
+
+
+4.str = "I am walking"
+
+
+5.1 2
+  3 4 
+ 
+1243
+
+6.cabbaz -> max length of substring which is palindrome . 
+here it is abba, so length is 4
+
+
+

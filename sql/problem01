@@ -1,0 +1,55 @@
+/*1.FULL DETAILS OF ALL HOTELS*/
+SELECT * FROM HOTEL;
+
+/*2.full details of all hotels in New York*/
+SELECT * FROM HOTEL WHERE CITY='NEW YORK';
+
+/*3.names and cities of all guests, ordered according to their cities*/
+SELECT NAME,CITY FROM GUEST ORDER BY CITY;
+
+/*4.details for non-smoking rooms in ascending order of price*/
+SELECT * FROM ROOM WHERE TYPE='N' ORDER BY PRICE;
+
+/*5. number of hotels there are*/
+SELECT COUNT(*) NO_OF_HOTEL FROM HOTEL;
+
+/*6.cities in which guests live. Each city should be listed only once*/
+SELECT DISTINCT(CITY) FROM GUEST;
+
+/*7.average price of a room*/
+SELECT AVG(PRICE) AVG_AMT FROM ROOM;
+
+/*8.hotel names, their room numbers, and the type of that room*/
+SELECT H.NAME,R.ROOM_NO,R.TYPE FROM ROOM R JOIN HOTEL H ON R.HOTEL_NO=H.HOTEL_NO;
+
+/*9.hotel names, booking dates, and room numbers for all hotels in New York*/
+SELECT H.NAME,B.DATE_FROM,B.DATE_TO,B.ROOM_NO FROM BOOKING B JOIN HOTEL H 
+ON B.HOTEL_NO=H.HOTEL_NO WHERE H.CITY='NEW YORK';
+
+/*10.number of bookings that started in the month of September*/
+SELECT COUNT(DATE_FROM) NO_OF_BOOKING_IN_SEP FROM BOOKING WHERE DATE_FROM LIKE '%-SEP-%';
+
+/*11.names and cities of guests who began a stay in New York in August*/
+SELECT NAME,CITY FROM  GUEST  WHERE GUEST_NO IN
+(SELECT B.GUEST_NO FROM BOOKING B JOIN HOTEL H ON H.HOTEL_NO=B.HOTEL_NO WHERE H.CITY='NEW YORK');
+
+/*12.hotel names and room numbers of any hotel rooms that have not been booked*/
+SELECT H.NAME,R.ROOM_NO FROM HOTEL H JOIN ROOM R ON R.HOTEL_NO=H.HOTEL_NO WHERE H.HOTEL_NO NOT IN
+(SELECT DISTINCT H.HOTEL_NO FROM HOTEL H JOIN BOOKING B ON B.HOTEL_NO=H.HOTEL_NO);
+
+/*13.hotel name and city of the hotel with the highest priced room*/
+SELECT H.NAME,H.CITY FROM HOTEL H JOIN ROOM R ON R.HOTEL_NO=H.HOTEL_NO WHERE R.PRICE=
+(SELECT MAX(PRICE) FROM ROOM);
+
+/*14.hotel names, room numbers, cities, and prices for hotels that have rooms with prices lower than the 
+lowest priced room in a Boston hotel*/
+SELECT H.NAME,R.ROOM_NO,H.CITY,R.PRICE FROM HOTEL H JOIN ROOM R ON R.HOTEL_NO=H.HOTEL_NO
+WHERE PRICE<(SELECT MIN(PRICE) FROM ROOM R INNER JOIN HOTEL H ON H.HOTEL_NO=R.HOTEL_NO WHERE H.CITY='BOSTON');
+
+/*15.average price of a room grouped by city*/
+SELECT H.CITY,AVG(PRICE) AVG_PRICE FROM ROOM R JOIN HOTEL H ON H.HOTEL_NO=R.HOTEL_NO GROUP BY H.CITY;
+
+SELECT * FROM HOTEL;
+SELECT * FROM ROOM;
+SELECT * FROM GUEST;
+SELECT * FROM BOOKING;

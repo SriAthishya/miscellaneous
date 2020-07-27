@@ -1,0 +1,176 @@
+1.select e.emp_id, e.emp_name,
+CASE when d.desc_name is null then 'UNKNOWN DESIGNATION'
+when d.desc_name is not null and d.role_type = 'lead' then 'TEAM_LEAD'
+else d.desc_name end as desc_name,
+CASE when p.place_desc is null then 'Others'
+when p.place_desc is not null and p.place_desc = 'newyork' then 'USA'
+else p.place_desc end as place_desc,
+CASE when pr.proj_name is null then 'UNKNOWN PROJECT'
+else pr.proj_name end as proj_name from employee e left join designation d
+on e.desc_id = d.desc_id  left join place p on e.place_id = p.place_id  left join
+project pr on e.proj_id = pr.proj_id order by emp_id;
+emp_id   emp_name	desc_name		place_desc	proj_name
+1	Vijaykumar	ASE			Chennai		Pepsi
+2	Raja		SE			Hyderabad	Microsoft
+3	Abhisheksingh	ASE			Mexico		Amazon
+4	Santosh		SSE			Bangalore	Cigna
+5	Kribakaran	SE			Hyderabad	ASG
+6	Divya		TL			Newyork		Pepsi
+7	Suganya		ASE			Hyderabad	Microsoft
+8	Shalini		SE			Bangalore	ASG
+9	Avantika	SSE			Chennai		Amazon
+10	Ajay		AM			Others		UNKNOWN PROJECT
+11	Tamilselvan	UNKNOWN DESIGNATION	Others		UNKNOWN PROJECT
+12	Vinodha		UNKNOWN DESIGNATION	Others		UNKNOWN PROJECT
+13	Karthick	UNKNOWN DESIGNATION	Newyork		ASG
+14	Sanjay		UNKNOWN DESIGNATION	Others		Amazon
+15	Meera		UNKNOWN DESIGNATION	Others		UNKNOWN PROJECT
+----------------------------------------------------------------------------------------
+2.select e.emp_id,e.emp_name, 
+case when d.role_type='DEVELOPER' and p.place_type='Offshore' then 'TEAMMEMBER'
+when d.role_type='DEVELOPER' and p.place_type='Nearshore' then 'TEAMLEAD'
+when d.role_type='DEVELOPER' and p.place_type='Onshore' then 'BA'
+when d.role_type='LEAD' and p.place_type='Onshore' then 'SCRUMMASTER'
+when d.role_type is not null or p.place_type is not null then 'CONTRACTER'
+else 'SHADOW' end as Proj_role
+from employee e left join designation d on d.desc_id=e.desc_id left join place p on
+p.place_id=e.place_id;
+
+emp_id  emp_name        proj_role
+1	Vijaykumar	TEAMMEMBER
+2	Raja		TEAMMEMBER
+3	Abhisheksingh	TEAMLEAD
+4	Santosh		TEAMMEMBER
+5	Kribakaran	TEAMMEMBER
+6	Divya		SCRUMMASTER
+7	Suganya		TEAMMEMBER
+8	Shalini		TEAMMEMBER
+9	Avantika	TEAMMEMBER
+10	Ajay		CONTRACTER
+11	Tamilselvan	SHADOW
+12	Vinodha		SHADOW
+13	Karthick	CONTRACTER
+14	Sanjay		SHADOW
+15	Meera		SHADOW
+--------------------------------------------------------------------------------------------------
+3.select 
+case when d.role_type <>'DEVELOPER'  then 'Others' else 'DEVELOPER' end desc_name ,
+case when p.place_desc is null then 'Others' else p.place_desc end as place_desc,
+case when pr.proj_name is null then 'Others' else pr.proj_name end as proj_name,count(emp_id) count from 
+employee e  join designation d on
+d.desc_id=e.desc_id   join place p on e.place_id=p.place_id   join project pr on pr.proj_id=e.proj_id 
+group by d.role_type,p.place_desc,pr.proj_name ;
+
+desc_name       place_desc    proj_name       count
+DEVELOPER	Bangalore	ASG		1
+DEVELOPER	Bangalore	Cigna		1
+DEVELOPER	Chennai		Amazon		1
+DEVELOPER	Chennai		Pepsi		1
+DEVELOPER	Hyderabad	ASG		1
+DEVELOPER	Hyderabad	Microsoft	2
+DEVELOPER	Mexico		Amazon		1
+Others		Newyork		Pepsi		1
+
+---------------------------------------------------------------------------------------------------------
+4.select e.emp_name,case when d.desc_name is null then "others" else d.desc_name end desc_name,
+case when  p.place_desc is null then 'Others' else p.place_desc end place_desc,
+case when  pr.proj_name is null then 'Others' else pr.proj_name end proj_name from employee e left join designation d on
+d.desc_id=e.desc_id left join place p on e.place_id=p.place_id left join project pr on pr.proj_id=e.proj_id ;
+
+emp_name       desc_name       place_desc      proj_name
+Vijaykumar	ASE		Chennai		Pepsi
+Raja		SE		Hyderabad	Microsoft
+Abhisheksingh	ASE		Mexico		Amazon
+Santosh		SSE		Bangalore	Cigna
+Kribakaran	SE		Hyderabad	ASG
+Divya		TL		Newyork		Pepsi
+Suganya		ASE		Hyderabad	Microsoft
+Shalini		SE		Bangalore	ASG
+Avantika	SSE		Chennai		Amazon
+Ajay		AM		Others		Others
+Tamilselvan	others		Others		Others
+Vinodha		others		Others		Others
+Karthick	others		Newyork		ASG
+Sanjay		others		Others		Amazon
+Meera		others		Others		Others
+------------------------------------------------------------------------------------------------------------
+5.select s.salesman_name,c.cust_name,c.city customer_city,s.city saleman_city from customer c join salesman s on
+s.salesman_id=c.salesman_id where c.city<>s.city;
+
+salesman_name    cust_name    customer_city   salesman_city
+Raju		   Ricky	Chennai		Hyderabad
+Srinath	 	   Amaran	Chennai		Mumbai
+--------------------------------------------------------------------------------------------------------------
+6.select Salesman_Name, City, Monthly_target,a.amt Amount_purchase_by_Customer from salesman s join 
+(select salesman_id,sum(purchased_amount) amt from customer group by salesman_id) a on 
+s.salesman_id=a.salesman_id where a.amt>=monthly_target;
+
+Salesman_name     city    Monthly_target   Amount_purchase_by_customer
+John		Chennai		10000		10000
+Raju		Hyderabad	21000		23000
+Srinath		Mumbai		9000		9000
+Vijay		Chennai		4000		5000
+-------------------------------------------------------------------------------------------------------
+7.select c.Cust_Name,c.City,c.Priority_num,a.amt Purchased_amount from customer c join 
+(select customer_id,sum(purchased_amount) amt from customer group by customer_id) a on c.customer_id=a.customer_id order by 
+c.Priority_num asc,a.amt desc;
+
+Cust_name         city   Priority_num   Purchase_amount
+James		Chennai		1	10000
+Ricky		Chennai		1	8000
+Ramu		Bangalore	1	8000
+Amaran		Chennai		1	3000
+Jyothi		Hyderabad	2	9000
+Akilan		Hyderabad	2	6000
+Dinesh		Mumbai		2	6000
+Arun		Chennai		2	5000
+--------------------------------------------------------------------------------------------------------------
+8.select s.salesman_name,c.City,s.monthly_target,a.amt Amount_purchase_by_Customer from customer c left join 
+(select customer_id,sum(purchased_amount) amt from customer group by salesman_id) a on c.customer_id=a.customer_id  join 
+salesman s on s.salesman_id=c.salesman_id where a.amt<=(select avg(monthly_target) from salesman group by salesman_id);
+
+Salesman_name     city    Monthly_target   Amount_purchase_by_customer
+John		Chennai		10000		10000
+Abraham		Bangalore	21000		8000
+Vijay		Chennai		4000		5000
+Srinath		Mumbai		9000		9000
+-----------------------------------------------------------------------------------------------------------------
+9.select s.Salesman_Name,m.salesman_name Sales_Manager_Name,s.Monthly_target Manager_Monthly_target,a.amt  Amount_purchase_by_Customer
+from salesman s inner join salesman m on m.salesman_id=s.sales_manager_id join 
+(select salesman_id,sum(purchased_amount) amt from customer group by salesman_id) a on a.salesman_id=s.salesman_id;
+
+John	Abraham	10000	10000
+Abraham	Srinath	21000	8000
+Raju	Srinath	21000	23000
+Srinath	Vijay	9000	9000
+Vijay	Balaji	4000	5000
+---------------------------------------------------------------------------------------------------------------------
+12.select distinct stu_name from student s join student_details sd on s.stu_details_id=sd.stu_details_id join city c on c.city_id=sd.city_id join class cl on cl.class_id=sd.class_id
+where classroom_num in (301,310,320) or city_name='Chennai';
+
+Ajay
+Ramesh
+Shriram
+Gopi
+Kalai
+-------------------------------------------------------------------------------------------------------------------
+13.select substr(cust_name,3,length(cust_name)-4) from cust;
+
+cust_name
+mesMart
+ckyAda
+manuj
+othiMahaling
+aranJot
+ilanBa
+unKum
+neshkum
+------------------------------------------------------------------------------------------------------------------------
+15.select cust_name  from cust where cust_name like '%A%'  and cust_name like '%U%' and cust_name like '%R%';
+ 
+cust_name
+Ramanujam
+ArunKumar
+Dineshkumar
+---------------------------------------------------------------------------------------------------------------------
+

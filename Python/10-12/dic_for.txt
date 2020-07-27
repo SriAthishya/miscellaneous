@@ -1,0 +1,9 @@
+ for i, j in m.items():
+...     for a,b in j.items():
+...         if a == 'marks':
+...             print("Totak marks scored by - "+i+" is "+str(sum(b)))
+-------------------------------------------------------------------------------
+for i, j in m.items():
+...     for a,b in j.items():
+...         if isinstance(m[i][a],list):
+...             print("Total mark scored by "+i+" is "+str(sum(m[i][a])))

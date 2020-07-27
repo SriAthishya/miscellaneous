@@ -1,0 +1,42 @@
+Sri Athishya Murugan
+emp_id:11825836
+
+1.select e.emp_id,e.Emp_name,case when d.desc_name is null then "Unknown Designation"
+when d.role_type='Lead' then d.desc_name='TEAM_LEAD' else else d.desc_name end as desc_name ,
+case when p.place_desc is null then "others" when p.Place_type='newyork' then p.place_desc='USA' 
+else p.place_desc end as place_desc,case when pr.Proj_name is null then "Unknown project" else 
+pr.Proj_name end as proj_name from employee e join designation d on
+d.desc_id=e.desc_id join place p on e.place_id=p.place_id join project pr on pr.proj_id=e.proj_id;
+
+2.select e.emp_id,e.emp_name, case when d.role_type='Developer' and p.place_type="OFFSHORE" then 'TEAMMEMBER',
+ when d.role_type='Developer' and p.place_type="NEARSHORE" then 'TEAMLEAD',
+when d.role_type='Developer' and place_type="ONSHORE" then 'BA',
+when d.role_type='LEAD' and place_type="ONSHORE" then 'SCRUMMASTER',
+else 'SHADOW' end as Proj_role from employee e join designation d on d.desc_id=e.desc_id join place p on
+p.place_id=e.place_id;
+
+3.select d.desc_name,p.place_desc,pr.proj_name,count(emp_id) count from employee e join designation d on
+d.desc_id=e.desc_id join place p on e.place_id=p.place_id join project pr on pr.proj_id=e.proj_id 
+group by p.place_desc,pr.proj_name having d.desc_name in 
+(select case when d.desc_name<>'developer' then d.desc_name="Others" else d.desc_name='developer' end
+desc_name from designation);
+
+4.select e.emp_name,case when d.desc_name is null then "others" else d.desc_name end desc_name,
+when case p.place_desc is null then "OThers" else p.place_desc end place_desc,
+when case pr.proj_name is null the "Others" else pr.proj_name end proj_name from employee e join designation d on
+d.desc_id=e.desc_id join place p on e.place_id=p.place_id join project pr on pr.proj_id=e.proj_id ;
+
+5.select s.salesman_name,c.cust_name,c.city customer_city,s.city saleman_city from customer c join salesman s on
+s.salesman_id=c.salesman_id where c.city<>s.city;
+
+6.select Salesman_Name, City, Monthly_target,a.amt Amount_purchase_by_Customer from salesman s join 
+(select salesman_id,sum(purchased_amount) amt from customer group by salesman_id) a on 
+s.salesman_id=a.salesman_id where a.amt>=monthly_target;
+
+7.select c.Cust_Name,c.City,c.Priority_num,a.amt Purchased_amount from customer c join 
+(select customer_id,sum(purchased_amount) amt from customer) a on c.customer_id=a.customer_id group by 
+c.Priority_num order by c.Priority_num asc,a.amt desc limit 2;
+
+8.select Salesman_Name, City,a.amt Amount_purchase_by_Customer customer c join 
+(select customer_id,sum(purchased_amount) amt from customer) a on c.customer_id=a.customer_id where a.amt
+<(select avg(monthly_target) from salesman);

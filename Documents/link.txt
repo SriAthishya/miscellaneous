@@ -1,0 +1,16 @@
+https://github.com/ratnasankeerthanreddy/Python-basics-/blob/master/Practice_Questions_On_Functionsd%20(1).ipynb
+
+https://github.com/ratnasankeerthanreddy/Python-basics-/blob/master/Practice_Questions_On_Functionsd%20(2).pdf
+
+Read about how to package a .py file to a .whl file
+
+virtual env in python -
+
+
+
+
+
+-----------------------------------------------------------------
+
+https://github.com/mono0926/Python-3-Object-Oriented-Programming/blob/master/1261_02_Code/notebook.py
+

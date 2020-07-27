@@ -1,0 +1,50 @@
+/*1.Fetch rows which have hottest month per city with highest rainfall*/
+select * from stats s join station t on s.stats_id=t.st_id where tem_far in (select max(tem_far) from stats) and rain_inch in
+(select max(rain_inch) from stats);
+
+/*2.Fetch and display rows with Station_ID, City, State, Month, Year and temp(in Celcius), rainfall (in cm)*/
+select st_id,city,state,month,year,round((tem_far-32)*5/9) tem,round(rain_inch*03937) rain from 
+stats s join station t on s.stats_id=t.st_id;
+
+/*3.Display all rows for states on all quarters. If a state do not have any quarter information,
+ default Temp in Celcius and rain in cms based on average for the year*/
+select stats_id,month,year,tem_far,rain_inch,
+st_id,city,state,lat_n,long_w from station t left join stats s on s.stats_id=t.st_id group by month having
+month in (select month from (SELECT month,case when month>=1 and month<=3 then 'q1' 
+when month>=4 and month<=6 then 'q2' when month>=7 and month<=9 then 'q3'
+when month>=10 and month<=12 then 'q4' else 'q' end as q
+ from stats group by q));
+
+/*4.Which state has coldest month and highest rainfall compared to average per year*/
+select distinct state from stats s left join station t on s.stats_id=t.st_id where stats_id in (select stats_id from stats where tem_far in (select min(tem_far) from stats)
+or rain_inch in (select max(rain_inch) from stats));
+ 
+/*5.Which city had maximum rainfall below average . Display city, state, rainfall, average information*/
+select city,state,rain_inch,avg(rain_inch) from stats s join station t on s.stats_id=t.st_id where rain_inch<(select max(rain_inch)
+ from stats);
+
+/*6.Which city had second  coldest month when compared to national average*/
+select city,min(tem_far),month from stats s join station t on s.stats_id=t.st_id where tem_far>(select min(tem_far) from stats);
+
+/*7.create a view based on question#3. If you query view, you should have resultset matching with question #3*/
+create view [ques3] as select stats_id,month,year,tem_far,rain_inch,
+st_id,city,state,lat_n,long_w from station t left join stats s on s.stats_id=t.st_id group by month having
+month in (select month from (SELECT month,case when month>=1 and month<=3 then 'q1' 
+when month>=4 and month<=6 then 'q2' when month>=7 and month<=9 then 'q3'
+when month>=10 and month<=12 then 'q4' else 'q' end as q
+ from stats group by q));
+ 
+select * from [ques3];
+
+/*8.Report stations which had temperature difference < 5 C  or difference > 20 C in subsequent quarters*/
+select stats_id from station t left join stats s on s.stats_id=t.st_id group by month having
+month in (select month from (SELECT month,case when month>=1 and month<=3 then 'q1' 
+when month>=4 and month<=6 then 'q2' when month>=7 and month<=9 then 'q3'
+when month>=10 and month<=12 then 'q4' else 'q' end as q
+ from stats group by q)) and ((tem_far-32)*5/9<5 or (tem_far-32)*5/9>20);
+
+/*9.Report stations which obsevered temperatures less than 0(in celcius)*/
+select stats_id from stats where (tem_far-32)*5/9<0;
+
+/*10.Display state information and number of times when rainfall is greater than national avergae*/
+select count(rain_inch),state from stats s join  station t on s.stats_id=t.st_id where rain_inch> (select avg(rain_inch) from stats);

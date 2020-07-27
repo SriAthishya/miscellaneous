@@ -1,0 +1,40 @@
+Sri athishya Murugan
+Emp_id:11825836
+
+1.select max(marks) from student where marks <(select max(marks) from student);
+
+2.select distinct * from student;
+
+3.select distinct * from student limit 1;
+
+4.select distinct * from student where id in (select max(id) from student);
+
+5.select distinct * from student limit 4;
+
+6.select distinct * from student order by id desc limit 3;
+
+7.select distinct * from student order by id desc limit n;
+
+8.select marks from student order by marks desc limit 3;
+
+9.select * from student where id in (select rowid from student where rowid%2<>0);
+
+10.select * from student where id in (select rowid from student where rowid%2=0);
+
+11.create view [class] as select * from student;
+select * from class;
+
+12.select * from student where name like 'abhi' or name like 'Geethasri';
+
+20.INNER JOIN--->select * from table_1 t1 inner join table_1 t2 on.t1.emp_id=t2.emp_id;
+LEFT OUTER JOIN--->select * from table_1 t1 left outer join table_2 t2 on t1.emp_id=t2.emp_id;
+RIGHT OUTER JOIN--->select * from table_1 t1 right outer join table_2 t2 on t1.emp_id=t2.emp_id;
+FULL OUTER JOIN--->select * from table_1 t1 full join table_2 t2 on t1.emp_id=t2.emp_id;
+
+19.select * from table group by id having count(id)>1;
+
+18.select weight,
+case when weight like '%.%' then substr(weight,1,instr(weight,'.')-1) else weight end as kg ,
+case when weight like '%.%' then substr(weight,instr(weight,'.')+1) else '0' end as gms from mass;
+
+

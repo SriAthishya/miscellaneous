@@ -1,0 +1,30 @@
+Sri Athishya Murugan
+id:11825836
+
+1.select publish_id,publish_name,publish_city from publish where publish_id not in 
+(select p.publish_id from publish p join author a on a.publish_id=p.publish_id
+where p.publish_city <> a.author_city and p.publish_city = a.author_country);
+
+2.select a.authors_name,a.author_country,p.publish_city,p.publish_start_date,p.branches from
+publish p join author a on a.publish_id=p.publish_id order by p.branches desc,
+p.publish_start_date asc;
+
+3.select p.publish_id,p.publish_name,p.publish_city,a.author_id,a.author_name from author a 
+join publish p on p.publish_id=a.publish_id where a.author_city=p.publish_city and 
+a.author_country=p.publish_city;
+
+4.select author_id,author_name,author_country,author_city from author where author_id not in 
+(select author_id from author where author_city in (select author_city from author group by 
+author_city having count(*)>1));
+
+5.select author_id,author_name from author a join publish p on p.publish_id=a.publish_id
+where p.publich_city<>a.author_country;
+
+6.select author_id,author_name from author a join publish p on p.publish_id=a.publish_id
+where (a.author_name like '_%')=(p.publish_name like '_%');
+
+7.select author_name from author where author_name=(substring_index(author_name,'.',2));
+
+8.select author_name from author where author_name<> author_name like "%.%";
+
+9.

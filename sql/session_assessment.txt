@@ -1,0 +1,12 @@
+1.select sum(quantity) over (partition by product_id) from sales where year in(2008,2009,2010);
+
+2.a.select max(quan) from (select sum(quantity) over(partition by product_id)quan from sales);
+
+2.b.select max(pri) from (select sum(price) over (partition by product_id)pri from sales);
+
+3.odd:
+	select * from (select *,rownumber() from sales) where rownumber%2<>0;
+  even:
+	select * from (select *,rownumber() from sales) where rownumber%2=0;
+  5th,10th,15th:
+	select * from (select *,rownumber() from sales) where rownumber%5=0;

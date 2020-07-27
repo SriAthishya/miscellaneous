@@ -1,0 +1,12 @@
+Date:18/06/2020
+
+1.Check if the given string is palindrome or not?
+str1="abba"
+
+2.Matrix Addition
+
+3.Display all the letters that occurs after the last string from the given string
+e.g:- i/p:"string"
+      o/p:"ng"
+
+4.Matrix Multiplication

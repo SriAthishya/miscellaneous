@@ -1,0 +1,54 @@
+select * from customer;
+c_id     name    city      phno        amount
+101	Albert	Chennai	   123-456-678	1000
+102	Beula	Chennai	   null	        1500
+103	Charles	Bangalore  987-654-432	2900
+104	David	Pune	   567-789-234	900
+105	Eunice	Bangalore  456-789-234	2200
+106	Ayraa	Mumbai	   789-678-456	6000
+107	Berlin	Pune	   768-456-690	3400
+108	Potter	Kolkata	    null	4700
+109	Kalis	Pune	   234-456-789	2679
+110	Potter	Kolkata	   897-654-345	4000
+111	Harry	Mumbai	   null	        3400
+
+select name from customer where name like 'A%';
+name
+Albert
+Ayraa
+
+select distinct name from customer where phno<>'null';
+name
+Albert
+Charles
+David
+Eunice
+Ayraa
+Berlin
+Kalis
+Potter
+
+select city,max(amount) high_amt from customer group by city;
+city      high_amt
+Bangalore  2900
+Chennai	   1500
+Kolkata	   4700
+Mumbai	   6000
+Pune	   3400
+
+select city,min(amount) high_amt from customer group by city having min(amount)>3000;
+city    high_amt
+Kolkata	4000
+Mumbai	3400
+
+select c_id,name from customer group by city having amount between 3000 and 5000;
+c_id    name
+110	Potter
+111	Harry
+
+select c_id,name from customer where amount between 3000 and 5000;
+c_id    name
+107	Berlin
+108	Potter
+110	Potter
+111	Harry

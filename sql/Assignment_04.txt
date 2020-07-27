@@ -1,0 +1,88 @@
+1.select d.dept_id,d.dept_name,
+case when e.dept_id is null then '0' else sum(emp_sal) end as sum_emp_sal 
+from department d left join employee e on d.dept_id=e.dept_id group by d.dept_id;
+
+1	IT	9000
+2	Admin	11000
+4	HR	0
+--------------------------------------------------------------------------------------------
+2.select e.dept_id,
+case when d.dept_id is null then 'Others' else d.dept_name end as dept_name,
+sum(emp_sal) sum_emp_sal 
+from employee e left join department d  on e.dept_id=d.dept_id group by d.dept_id;
+
+	Others	7000
+1	IT	9000
+2	Admin	11000
+--------------------------------------------------------------------------------------
+/*3*/
+select emp_id,emp_name,manager_id,salary from emp where salary>=2700 and salary<=10000;
+3	Vinoth		1	3000
+4	Abhishek	2	5000
+5	Divya		3	6000
+8	Aarthi		4	2700
+--------------------------------------------------------------------------------------------
+4.select e.manager_id,m.emp_name manager_name,sum(e.salary) from emp e join emp m on 
+e.manager_id=m.emp_id group by e.manager_id;
+
+1	Vivek	 5000
+2	Raj	 5000
+3	Vinoth	 10850
+4	Abhishek 2700
+8	Aarthi	 11000
+---------------------------------------------------------------------------------------------
+5.select emp_id,substr(emp_name,4) emp_name from emp1;
+
+1	eshKumar
+2	ayaRaja
+3	ishek
+4	eshKumar
+5	ayaprakashSingh
+6	yashree
+--------------------------------------------------------------------------------------------
+6.select emp_id,substr(emp_name,instr(emp_name,'h')+1) from emp1;
+
+1	Kumar
+2	ayaRaja
+3	ishek
+4	Kumar
+5	Singh
+6	ree
+-------------------------------------------------------------------------------------------
+7.select emp_id,emp_name,max(salary) salary from emp2 where salary<
+(select max(salary) from emp2);
+
+5	Divya	6000
+-----------------------------------------------------------------------------------------------
+8.select emp_id,emp_name,salary from emp2 order by salary desc limit 3;
+
+1	Vivek		11000
+5	Divya		6000
+4	Abhishek	5000
+-------------------------------------------------------------------------------------------------
+9.select emp_id,emp_name,dept_name,salary from emp3 where (dept_name='IT' and
+salary>3000) or (dept_name='Admin' and salary>3400);
+
+2	Raj		Admin	3500
+4	Abhishek	IT	5700
+------------------------------------------------------------------------------------------------
+10.select emp_id,emp_name,dept_name,salary from emp4 where emp_name like '%j%';
+
+1	Rajesh		IT	2000
+2	Ajaykumar	Admin	3500
+5	Balaji		ITES	3000
+-------------------------------------------------------------------------------------------
+11.select emp_id,emp_name,dept_name,salary from emp4 where emp_name like '%j%' 
+or emp_name like '%n%' or emp_name like '%m%';
+
+1	Rajesh		IT	2000
+2	Ajaykumar	Admin	3500
+4	Vivekkumar	IT	5700
+5	Balaji		ITES	3000
+6	Raveendar	HR	5800
+7	Poornarao	Admin	3200
+----------------------------------------------------------------------------------------------
+12.select emp_id,emp_name,dept_name,salary from emp4 where emp_name like '%b%'
+and emp_name like '%h%' and emp_name like '%e%';
+
+3	Abhishek	HR	4800

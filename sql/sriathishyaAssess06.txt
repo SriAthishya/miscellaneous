@@ -1,0 +1,22 @@
+Sri Athishya Murugan
+Id:11825836
+
+1.select emp_id,emp_name,case when desc_name is null then 'others' else desc_name end as desc_name,
+case when place_desc is null then 'others' else place_desc end as place_desc,
+count(emp_id) Emp_desc_cnt,count(emp_id) emp_place_cnt
+from employee e left join designation d on e.desc_id=d.desc_id left join place p on p.place_id=e.place_id
+group by desc_name,place_desc;
+
+2.select emp_id,emp_name,desc_name,place_Desc,proj_name from employee e join designation d
+ on e.desc_id=d.desc_id join place p on p.place_id=e.place_id join project pr on pr.proj_id=e.proj_id
+where proj_name like '%Data%' or proj_name like '%Cloud%';
+
+3.select emp_name,desc_name,place_desc,proj_name from employee e join designation d
+ on e.desc_id=d.desc_id join place p on p.place_id=e.place_id join project pr on pr.proj_id=e.proj_id
+order by p.place_id desc,pr.project_id desc limit 1;
+
+4.select s.salesman_name,cust_name  from customer c join salesman s on s.sales_manager_id=c.salesman_id
+where s.salesman_id=c.salesman_id order by priority_num;
+
+5.update salesman s set monthly_target=c.purchased_amount from customer c  join salesman s on 
+s.salesman_id=c.salesman_id;

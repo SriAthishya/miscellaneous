@@ -1,0 +1,61 @@
+Sri Athishya Murugan
+emp_id:11825836
+
+
+1.difference between dbms and rdbms:
+      dbms                         rdbms
+*stores data in files     *stores data in tables
+*no security measures     *applies acid properties
+available
+*No realtionships         *Relationship between tables are available
+
+3.identify duplicates:
+   *by distinct:
+	select distinct name from employees;
+   *group by having count:
+	select name from employee group by name having count(name)>1;
+
+4.eliminate duplicates:
+   -->by group by
+   -->by self join
+   
+5.identify top 10 values:
+     By using order by desc
+     select salary from employee order by salary desc limit 10;
+
+6.nth maximum salary:
+     select id,max(salary) from employee group by id;
+
+7.dept wise top 2 salaries:
+	select dept_id,max(Salary) from employee group by dept_id order by max(salary) limit 2;
+
+9.difference between delete and truncate:
+        delete                    truncate
+*Truncate table employee;      *Delete from table employee where id=01;
+*delete entire data from       *delete particular data from employee
+employee
+
+10.seperate first name and last name:
+select substr(name,1,':') firstname,substr(name,":",-1)lastname from employee;
+
+11.diff primary and foreign key:
+        primary key               foriegn key
+*unique and not null             *no conditions
+*only one primary key            * any number of primary keys
+
+12.difference:
+*where-a condition is applied to filter data from table
+*group by- used to filter table based of grouping elements
+*Order by-sorts data in ascending or descending
+*having- this comes only after group to implement conditions
+
+13.select salary from employee where salary in (select avg(salary) from employees group by
+dept);
+
+15.Group by works faster
+
+16.insert into table2 (col3,col4) select col1,col2 from table1 
+
+
+
+	

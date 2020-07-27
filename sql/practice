@@ -1,0 +1,54 @@
+CREATE TABLE emp1(empno INT PRIMARY KEY,ename VARCHAR(10),job VARCHAR(20),deptno INT,mgr INT);
+INSERT INTO emp1(empno,ename,job,deptno) VALUES (7839,'King','president',10);
+INSERT INTO emp1(empno,ename,job,deptno,mgr) VALUES (7698,'Blake','manager',30,7839);
+INSERT INTO emp1(empno,ename,job,deptno,mgr) VALUES (7782,'Clark','manager',10,7839);
+INSERT INTO emp1(empno,ename,job,deptno,mgr) VALUES (7566,'Jones','manager',20,7839);
+INSERT INTO emp1(empno,ename,job,deptno,mgr) VALUES (7654,'Martin','Salesman',30,7698);
+INSERT INTO emp1(empno,ename,job,deptno,mgr) VALUES (7499,'Allen','Salesman',30,7698);
+INSERT INTO emp1(empno,ename,job,deptno,mgr) VALUES (7844,'Turner','Salesman',30,7698);
+INSERT INTO emp1(empno,ename,job,deptno,mgr) VALUES (7900,'James','Clerk',30,7698);
+INSERT INTO emp1(empno,ename,job,deptno,mgr) VALUES (7521,'Ward','Salesman',30,7698);
+INSERT INTO emp1(empno,ename,job,deptno,mgr) VALUES (7902,'Ford','Analyst',20,7566);
+INSERT INTO emp1(empno,ename,job,deptno,mgr) VALUES (7369,'Smith','Clerk',20,7902);
+INSERT INTO emp1(empno,ename,job,deptno,mgr) VALUES (7788,'Scott','Analyst',20,7566);
+INSERT INTO emp1(empno,ename,job,deptno,mgr) VALUES (7876,'Adams','Clerk',20,7788);
+INSERT INTO emp1(empno,ename,job,deptno,mgr) VALUES (7934,'Miller','Clerk',10,7782);
+
+select * from emp1;
+
+delete from dept_emp;
+
+select e.empno,e.ename,e.mgr,m.ename from emp1 e inner join emp1 m on m.empno=e.mgr;
+
+
+select job from emp1 group by job ;
+select distinct job from emp1;
+
+Create table Location (locationid number primary key, name varchar2(30),
+ sunlight number, water number);
+ 
+Insert into location (locationid,name,sunlight,water) values(0,"East", .28, .80); 
+Insert into location values(1, "North", .17, .84); 
+Insert into location values(2, "West", .38, .48); 
+Insert into location values(3, "South", .45, .66); 
+
+Create table planted (plantFK number, gardenerFK number, locationFK number,
+ date1 date, seeds number ); 
+ 
+Insert into planted values(0, 0, 0 , "18-APR-2012", 28); 
+Insert into planted values(0, 1, 1 , "14-APR-2012", 14); 
+Insert into planted values(1, 0, 2 , "18-APR-2012", 36); 
+Insert into planted values(2, 1, 3 , "14-APR-2012", 20); 
+Insert into planted values(2, 2, 2 , "19-APR-2012", 12); 
+Insert into planted values(3, 3, 3 , "25-APR-2012", 38); 
+Insert into planted values(4, 2, 0 , "30-APR-2012", 30); 
+Insert into planted values(5, 2, 0 , "15-APR-2012", 30); 
+select * from planted;
+
+select plantfk,sum(seeds) from planted group by plantfk;
+
+select plantfk,sum(seeds) over (PARTITION BY plantfk) ethoonu from planted;
+
+select Row_number() over (partition by plantfk) from planted;
+
+select Rank() over (partition by plantfk) from planted;
