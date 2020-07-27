@@ -285,12 +285,34 @@ select distinct m_name,place_town from place p join musician m on p.place_no=m.b
 (select born_in from musician where m_name='James First')) and m_name<>'James First';
 
 /*12.Create a list showing for EVERY musician born in Britain the number of compositions and the number of instruments played.*/
-select m_name,case when count(cmpn_no) is null then '0' else count(c_no) end as compositions,
-case when count(instrument) is null then '0' else count(instrument) end as instuments from musician m left join performer p on p.perf_is=m.m_no left join 
-composer r on m.m_no=r.comp_is left join has_composed h on h.cmpr_no=r.comp_no join composition c on c.c_no=h.cmpn_no where m.born_in in (select place_no
-from place where place_country in ('Scotland','England')) group by m_name ;
+select m_name,case when count(instrument) is null then '0' else count(instrument) end as instruments,
+case when count(cmpr_no) is null then '0' else count(cmpr_no) end as compositions from musician m left join performer p on 
+p.perf_is=m.m_no left join composer r on r.comp_is=m.m_no left join has_composed h on h.cmpr_no=r.comp_no where born_in in 
+(select place_no from place where place_country in ('Scotland','England')) group by m_name ;
 
+/*13.Give the band name, conductor and contact of the bands performing at the most recent concert in the Royal Albert Hall*/
+select b.band_name,m2.m_name conductor,m1.m_name contact from musician m1 join  band b on b.band_contact=m1.m_no join  performance p on p.gave=b.band_no 
+join musician m2 on m2.m_no=p.conducted_by where p.performed_in in (select concert_no from concert where concert_venue='Royal Albert Hall');
 
+/*14.Give a list of musicians associated with Glasgow. Include the name of the musician and the nature of the association - one or more of 'LIVES_IN', 
+'BORN_IN', 'PERFORMED_IN' AND 'IN_BAND_IN'.*/
+select m_name,
+case when m.living_in=z.place_no then 'LIVES_IN' 
+     when m.born_in=z.place_no then 'BORN_IN'
+     when c.concert_venue=z.place_no then 'PERFORMED_IN'
+     when b.band_home=z.place_no then 'IN_BAND_IN' end as status 
+from musician m left join concert c on c.concert_venue=m.born_in left join band b on b.band_home=m.living_in left join
+(select place_no from place where place_town='Glasgow') z on z.place_no=b.band_home order by m_name;
+
+/*15.Jeff Dawn plays in a band with someone who plays in a band with Sue Little. Who is it and what are the bands*/
+select band_no from band where band_contact=(select m_no from musician where m_name='Sue Little');
+
+select m_name,b.band_name from musician m join band b on b.band_contact=m.m_no where m_no in (select perf_is from performer p join plays_in i on p.perf_no=i.player where 
+i.band_id in (select band_no from band where band_contact=(select m_no from musician where m_name='Sue Little')))
+intersect
+select m_name,b.band_name from musician m join band b on b.band_contact=m.m_no where m_no in (select perf_is from performer p join plays_in i on p.perf_no=i.player where 
+m_name<>'Jeff Dawn' and 
+i.band_id in (select band_no from band where band_contact=(select m_no from musician where m_name='Jeff Dawn')));
 
 select * from musician;
 select * from place;
